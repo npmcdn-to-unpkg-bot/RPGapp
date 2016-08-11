@@ -11,11 +11,11 @@ RPG.Talent = {
 RPG.Player.initEquipment = function() {
 
 	var equipment = {
-		 helmet: ""
-		, armor: ""
-		, gloves: ""
-		, boots: ""
-		, weapon: ""
+		 helmet: RPG.Item.initItem(RPG.Item.Type.Helmet)
+		, armor: RPG.Item.initItem(RPG.Item.Type.Armor)
+		, gloves: RPG.Item.initItem(RPG.Item.Type.Gloves)
+		, boots: RPG.Item.initItem(RPG.Item.Type.Boots)
+		, weapon: RPG.Item.initItem(RPG.Item.Type.Weapon)
 	}
 
 	return equipment

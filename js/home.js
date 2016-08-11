@@ -42,6 +42,7 @@ var CreateChar = React.createClass({displayName: "CreateChar",
 		var talent = this.state.talent
 		
 		var p1 = RPG.Player.createPlayer(name, talent)
+		console.log(p1)
 		//callback
 	}
 })
