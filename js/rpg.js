@@ -1,5 +1,10 @@
 if(typeof RPG === 'undefined') RPG = {};
 
+// michael's RPG game to prepare your hero before 
+// the final battle
+// you get 100 points to spend on whatever you want
+// eg. items, skills, or stats 
+
 RPG.Player = {}
 RPG.Talent = {
 	 WARRIOR: "Warrior"
