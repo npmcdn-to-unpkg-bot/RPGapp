@@ -1,10 +1,41 @@
 /** @jsx React.DOM */
 
+var Dashboard = React.createClass({displayName: "Dashboard",
+	getInitialState: function() {
+		return {
+			points: 1000
+		}
+	},
+
+	render: function() {
+		return (
+			React.createElement("div", {className: "dashboard"}, 
+				React.createElement("div", null, "You have ", React.createElement("span", null, this.state.points), " points to spend")
+
+			)
+		)
+	},
+
+	handlePointsChange: function(event) {
+
+	}
+})
+
+var ActionItem = React.createClass({displayName: "ActionItem",
+	render: function() {
+		return(
+			React.createElement("div", null)
+		)
+	}
+})
+
+
 var CreateChar = React.createClass({displayName: "CreateChar",
 	getInitialState: function() {
 		return {
 			username: '',
-			talent: 'Warrior'
+			talent: 'Warrior',
+			created: false
 		}
 	},
 
@@ -24,7 +55,8 @@ var CreateChar = React.createClass({displayName: "CreateChar",
 				    React.createElement("option", {value: "Wizard"}, "Wizard"), 
 				    React.createElement("option", {value: "Fighter"}, "Fighter")
 				), 
-				React.createElement("button", {onClick: this.handleCreation}, "Create")
+				this.state.created ? null : React.createElement("button", {onClick: this.handleCreation}, "Create"), 
+				 this.state.created? React.createElement(Dashboard, null) : null
 			)
 		)
 	},
@@ -41,9 +73,9 @@ var CreateChar = React.createClass({displayName: "CreateChar",
 		var name = this.state.username
 		var talent = this.state.talent
 		
-		var p1 = RPG.Player.createPlayer(name, talent)
-		console.log(p1)
-		//callback
+		var player = RPG.Player.createPlayer(name, talent)
+		
+		if(player) this.setState({created: true})
 	}
 })
 

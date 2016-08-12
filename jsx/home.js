@@ -1,10 +1,41 @@
 /** @jsx React.DOM */
 
+var Dashboard = React.createClass({
+	getInitialState: function() {
+		return {
+			points: 1000
+		}
+	},
+
+	render: function() {
+		return (
+			<div className="dashboard">
+				<div>You have <span>{this.state.points}</span> points to spend</div>
+
+			</div>
+		)
+	},
+
+	handlePointsChange: function(event) {
+
+	}
+})
+
+var ActionItem = React.createClass({
+	render: function() {
+		return(
+			<div></div>
+		)
+	}
+})
+
+
 var CreateChar = React.createClass({
 	getInitialState: function() {
 		return {
 			username: '',
-			talent: 'Warrior'
+			talent: 'Warrior',
+			created: false
 		}
 	},
 
@@ -24,7 +55,8 @@ var CreateChar = React.createClass({
 				    <option value="Wizard">Wizard</option>
 				    <option value="Fighter">Fighter</option>
 				</select>
-				<button onClick={this.handleCreation}>Create</button>
+				{this.state.created ? null : <button onClick={this.handleCreation}>Create</button>}
+				{ this.state.created? <Dashboard /> : null }
 			</div>
 		)
 	},
@@ -41,9 +73,9 @@ var CreateChar = React.createClass({
 		var name = this.state.username
 		var talent = this.state.talent
 		
-		var p1 = RPG.Player.createPlayer(name, talent)
-		console.log(p1)
-		//callback
+		var player = RPG.Player.createPlayer(name, talent)
+		
+		if(player) this.setState({created: true})
 	}
 })
 
