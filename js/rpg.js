@@ -3,7 +3,7 @@ if(typeof RPG === 'undefined') RPG = {};
 // michael's RPG game to prepare your hero before 
 // the final battle
 // you get 100 points to spend on whatever you want
-// eg. items, skills, or stats 
+// eg. skills, or stats, upgrades
 
 RPG.Player = {}
 RPG.Talent = {
@@ -12,6 +12,8 @@ RPG.Talent = {
 	, FIGHTER: "Fighter"
 	, RANGER: "Ranger"
 }
+
+RPG.chosenTalent = ''
 
 RPG.Player.initEquipment = function() {
 
@@ -53,6 +55,7 @@ RPG.Player.applyTalentBonus = function(_talent) {
 		case RPG.Talent.MAGE:
 			stats.mp = Math.floor(stats.mp * 1.5);
 			stats.intl += 5;
+			break;
 		case RPG.Talent.FIGHTER:
 			stats.hp = Math.floor(stats.hp * 1.25);
 			stats.sp = Math.floor(stats.sp * 1.25);
