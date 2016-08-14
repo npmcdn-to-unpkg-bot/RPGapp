@@ -57,7 +57,7 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 
 	render: function() {
 		var skillOpt
-		switch(RPG.chosenTalent) {
+		switch(RPG.currTalent) {
 			case RPG.Talent.WARRIOR:
 				skillOpt = React.createElement(WarSkill, null)
 				break;
@@ -65,10 +65,10 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 				skillOpt = React.createElement(MageSkill, null)
 				break;
 			case RPG.Talent.FIGHTER:
-				skillOpt = React.createElement(BowSkill, null)
+				skillOpt = React.createElement(FtrSkill, null)
 				break;
 			case RPG.Talent.RANGER:
-				skillOpt = React.createElement(FtrSkill, null)
+				skillOpt = React.createElement(BowSkill, null)
 				break;
 			default:
 				break;
@@ -77,23 +77,60 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 		return (
 			React.createElement("div", {className: "dashboard"}, 
 				React.createElement("div", null, "You have ", React.createElement("span", null, this.state.points), " points to spend"), 
-				React.createElement("ul", null, 
-					React.createElement("li", null, "Upgrade Armor"), 
-					React.createElement("li", null, "Upgrade Weapon"), 
-					React.createElement("li", null, "Increase HP"), 
-					React.createElement("li", null, "Increase MP"), 
-					React.createElement("li", null, "Increase SP"), 
-					React.createElement("li", null, "Increase STR"), 
-					React.createElement("li", null, "Increase DEX"), 
-					React.createElement("li", null, "Increase WIL"), 
-					React.createElement("li", null, "Increase INTL"), 
-					React.createElement("li", null, "Increase LUCK")
+				React.createElement("ol", null, 
+					React.createElement("li", null, "Upgrade Armor"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.equipment.armor, "Armor", 75)}, "Buy"), 
+					React.createElement("li", null, "Upgrade Weapon"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.equipment.weapon, "Weapon", 75)}, "Buy"), 
+					React.createElement("li", null, "Increase HP"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.hp, 50)}, "Buy"), 
+					React.createElement("li", null, "Increase MP"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.mp, 50)}, "Buy"), 
+					React.createElement("li", null, "Increase SP"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.sp, 25)}, "Buy"), 
+					React.createElement("li", null, "Increase Strength"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.str, 50)}, "Buy"), 
+					React.createElement("li", null, "Increase Dexterity"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.dex, 50)}, "Buy"), 
+					React.createElement("li", null, "Increase Will"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.will, 50)}, "Buy"), 
+					React.createElement("li", null, "Increase Intelligence"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.intl, 50)}, "Buy"), 
+					React.createElement("li", null, "Increase Luck"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.luck, 25)}, "Buy")
 				), 
 
 				skillOpt
 
 			)
 		)
+	},
+
+	handlePurchase: function(purchaseItem, purchaseType, cost) {
+		if(cost > this.state.points) return false
+
+		//console.log(purchaseItem, purchaseType, cost)
+
+		if(isNaN(purchaseItem)) {
+			//console.log(purchaseType, RPG.Item.Type.Weapon)
+			if(purchaseType == RPG.Item.Type.Weapon) {
+				console.log('upgrading weapon ...')
+				var weapon = RPG.Item.upgradeWeapon(purchaseItem)
+				if(!weapon) {
+					alert('you cannot upgrade further!')
+					return false
+				}
+
+				RPG.Item.setWeapon(RPG.currPlayer, weapon)
+			} 
+
+			if(purchaseType == RPG.Item.Type.Armor) {
+				console.log('upgrading armor ...')
+				var armor = RPG.Item.upgradeArmor(purchaseItem)
+				if(!armor) {
+					alert('you cannot upgrade further')
+					return false
+				}
+
+				RPG.Item.setArmor(RPG.currPlayer, armor)
+			}
+		} else {
+			// do the same for stats
+		}
+
+		this.setState({points: this.state.points - cost})
+
+		return false
 	},
 
 	handlePointsChange: function(event) {
@@ -146,11 +183,12 @@ var CreateChar = React.createClass({displayName: "CreateChar",
 		var name = this.state.username
 		var talent = this.state.talent
 		
-		var player = RPG.Player.createPlayer(name, talent)
+		var p1 = RPG.Player.createPlayer(name, talent)
 		
-		if(player) {
+		if(p1) {
 			this.setState({created: true})
-			RPG.chosenTalent = talent
+			RPG.currPlayer = p1
+			RPG.currTalent = talent
 		}
 	}
 })

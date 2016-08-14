@@ -57,7 +57,7 @@ var Dashboard = React.createClass({
 
 	render: function() {
 		var skillOpt
-		switch(RPG.chosenTalent) {
+		switch(RPG.currTalent) {
 			case RPG.Talent.WARRIOR:
 				skillOpt = <WarSkill />
 				break;
@@ -65,10 +65,10 @@ var Dashboard = React.createClass({
 				skillOpt = <MageSkill />
 				break;
 			case RPG.Talent.FIGHTER:
-				skillOpt = <BowSkill />
+				skillOpt = <FtrSkill />
 				break;
 			case RPG.Talent.RANGER:
-				skillOpt = <FtrSkill />
+				skillOpt = <BowSkill />
 				break;
 			default:
 				break;
@@ -77,23 +77,60 @@ var Dashboard = React.createClass({
 		return (
 			<div className="dashboard">
 				<div>You have <span>{this.state.points}</span> points to spend</div>
-				<ul>
-					<li>Upgrade Armor</li>
-					<li>Upgrade Weapon</li>
-					<li>Increase HP</li>
-					<li>Increase MP</li>
-					<li>Increase SP</li>
-					<li>Increase STR</li>
-					<li>Increase DEX</li>
-					<li>Increase WIL</li>
-					<li>Increase INTL</li>
-					<li>Increase LUCK</li>
-				</ul>
+				<ol>
+					<li>Upgrade Armor</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.equipment.armor, "Armor", 75)}>Buy</button>
+					<li>Upgrade Weapon</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.equipment.weapon, "Weapon", 75)}>Buy</button>
+					<li>Increase HP</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.hp, 50)}>Buy</button>
+					<li>Increase MP</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.mp, 50)}>Buy</button>
+					<li>Increase SP</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.sp, 25)}>Buy</button>
+					<li>Increase Strength</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.str, 50)}>Buy</button>
+					<li>Increase Dexterity</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.dex, 50)}>Buy</button>
+					<li>Increase Will</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.will, 50)}>Buy</button>
+					<li>Increase Intelligence</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.intl, 50)}>Buy</button>
+					<li>Increase Luck</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.luck, 25)}>Buy</button>
+				</ol>
 
 				{skillOpt}
 
 			</div>
 		)
+	},
+
+	handlePurchase: function(purchaseItem, purchaseType, cost) {
+		if(cost > this.state.points) return false
+
+		//console.log(purchaseItem, purchaseType, cost)
+
+		if(isNaN(purchaseItem)) {
+			//console.log(purchaseType, RPG.Item.Type.Weapon)
+			if(purchaseType == RPG.Item.Type.Weapon) {
+				console.log('upgrading weapon ...')
+				var weapon = RPG.Item.upgradeWeapon(purchaseItem)
+				if(!weapon) {
+					alert('you cannot upgrade further!')
+					return false
+				}
+
+				RPG.Item.setWeapon(RPG.currPlayer, weapon)
+			} 
+
+			if(purchaseType == RPG.Item.Type.Armor) {
+				console.log('upgrading armor ...')
+				var armor = RPG.Item.upgradeArmor(purchaseItem)
+				if(!armor) {
+					alert('you cannot upgrade further')
+					return false
+				}
+
+				RPG.Item.setArmor(RPG.currPlayer, armor)
+			}
+		} else {
+			// do the same for stats
+		}
+
+		this.setState({points: this.state.points - cost})
+
+		return false
 	},
 
 	handlePointsChange: function(event) {
@@ -146,11 +183,12 @@ var CreateChar = React.createClass({
 		var name = this.state.username
 		var talent = this.state.talent
 		
-		var player = RPG.Player.createPlayer(name, talent)
+		var p1 = RPG.Player.createPlayer(name, talent)
 		
-		if(player) {
+		if(p1) {
 			this.setState({created: true})
-			RPG.chosenTalent = talent
+			RPG.currPlayer = p1
+			RPG.currTalent = talent
 		}
 	}
 })

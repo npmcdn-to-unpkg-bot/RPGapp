@@ -13,7 +13,8 @@ RPG.Talent = {
 	, RANGER: "Ranger"
 }
 
-RPG.chosenTalent = ''
+RPG.currTalent = ''
+RPG.currPlayer = {}
 
 RPG.Player.initEquipment = function() {
 
