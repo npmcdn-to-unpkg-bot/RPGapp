@@ -4,11 +4,18 @@ var WarSkill = React.createClass({displayName: "WarSkill",
 	render: function() {
 		return (
 			React.createElement("ol", null, 
-				React.createElement("li", null, "Buy Skill: Smash"), 
-				React.createElement("li", null, "Buy Skill: Defense"), 
-				React.createElement("li", null, "Buy Skill: Bash")
+				React.createElement("li", null, "Buy Skill: Bash"), React.createElement("button", {onClick: this.handlePurchase.bind(null, 'bash', 105)}, "Buy"), 
+				React.createElement("li", null, "Buy Skill: Smash"), React.createElement("button", {onClick: this.handlePurchase.bind(null, 'smash', 155)}, "Buy")
 			)
 		)
+	},
+
+	handlePurchase: function(_name, _cost) {
+		if(_cost > this.props.points) return false
+
+		RPG.currPlayer.skills.push(RPG.Skills.getSkill(_name))
+
+		return false
 	}
 })
 
@@ -16,11 +23,18 @@ var MageSkill = React.createClass({displayName: "MageSkill",
 	render: function() {
 		return (
 			React.createElement("ol", null, 
-				React.createElement("li", null, "Buy Skill: Firebolt"), 
-				React.createElement("li", null, "Buy Skill: Mana Shield"), 
-				React.createElement("li", null, "Buy Skill: Hailstorm")
+				React.createElement("li", null, "Buy Skill: Firebolt"), React.createElement("button", {onClick: this.handlePurchase.bind(null, 'firebolt', 105)}, "Buy"), 
+				React.createElement("li", null, "Buy Skill: Hailstorm"), React.createElement("button", {onClick: this.handlePurchase.bind(null, 'hailstorm', 155)}, "Buy")
 			)
 		)
+	},
+
+	handlePurchase: function(_name, _cost) {
+		if(_cost > this.props.points) return false
+
+		RPG.currPlayer.skills.push(RPG.Skills.getSkill(_name))
+
+		return false
 	}
 })
 
@@ -28,11 +42,18 @@ var BowSkill = React.createClass({displayName: "BowSkill",
 	render: function() {
 		return (
 			React.createElement("ol", null, 
-				React.createElement("li", null, "Buy Skill: Magnum"), 
-				React.createElement("li", null, "Buy Skill: Arrow Revolver"), 
-				React.createElement("li", null, "Buy Skill: Counter")
+				React.createElement("li", null, "Buy Skill: Arrow Revolver"), React.createElement("button", {onClick: this.handlePurchase.bind(null, 'revolver', 105)}, "Buy"), 
+				React.createElement("li", null, "Buy Skill: Magnum"), React.createElement("button", {onClick: this.handlePurchase.bind(null, 'magnum', 155)}, "Buy")
 			)
 		)
+	},
+
+	handlePurchase: function(_name, _cost) {
+		if(_cost > this.props.points) return false
+
+		RPG.currPlayer.skills.push(RPG.Skills.getSkill(_name))
+
+		return false
 	}
 })
 
@@ -40,11 +61,18 @@ var FtrSkill = React.createClass({displayName: "FtrSkill",
 	render: function() {
 		return (
 			React.createElement("ol", null, 
-				React.createElement("li", null, "Buy Skill: Dropkick"), 
-				React.createElement("li", null, "Buy Skill: Tumble"), 
-				React.createElement("li", null, "Buy Skill: Punch")
+				React.createElement("li", null, "Buy Skill: Punch"), React.createElement("button", {onClick: this.handlePurchase.bind(null, 'punch', 105)}, "Buy"), 
+				React.createElement("li", null, "Buy Skill: Dropkick"), React.createElement("button", {onClick: this.handlePurchase.bind(null, 'dropkick', 155)}, "Buy")
 			)
 		)
+	},
+
+	handlePurchase: function(_name, _cost) {
+		if(_cost > this.props.points) return false
+
+		RPG.currPlayer.skills.push(RPG.Skills.getSkill(_name))
+
+		return false
 	}
 })
 
@@ -59,7 +87,7 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 		var skillOpt
 		switch(RPG.currTalent) {
 			case RPG.Talent.WARRIOR:
-				skillOpt = React.createElement(WarSkill, null)
+				skillOpt = React.createElement(WarSkill, {points: this.state.points})
 				break;
 			case RPG.Talent.MAGE:
 				skillOpt = React.createElement(MageSkill, null)
@@ -80,17 +108,19 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 				React.createElement("ol", null, 
 					React.createElement("li", null, "Upgrade Armor"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.equipment.armor, "Armor", 75)}, "Buy"), 
 					React.createElement("li", null, "Upgrade Weapon"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.equipment.weapon, "Weapon", 75)}, "Buy"), 
-					React.createElement("li", null, "Increase HP"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.hp, 50)}, "Buy"), 
-					React.createElement("li", null, "Increase MP"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.mp, 50)}, "Buy"), 
-					React.createElement("li", null, "Increase SP"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.sp, 25)}, "Buy"), 
-					React.createElement("li", null, "Increase Strength"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.str, 50)}, "Buy"), 
-					React.createElement("li", null, "Increase Dexterity"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.dex, 50)}, "Buy"), 
-					React.createElement("li", null, "Increase Will"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.will, 50)}, "Buy"), 
-					React.createElement("li", null, "Increase Intelligence"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.intl, 50)}, "Buy"), 
-					React.createElement("li", null, "Increase Luck"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.luck, 25)}, "Buy")
+					React.createElement("li", null, "Increase HP"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.hp, "HP", 50)}, "Buy"), 
+					React.createElement("li", null, "Increase MP"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.mp, "MP", 50)}, "Buy"), 
+					React.createElement("li", null, "Increase SP"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.sp, "SP", 25)}, "Buy"), 
+					React.createElement("li", null, "Increase Strength"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.str, "STR", 50)}, "Buy"), 
+					React.createElement("li", null, "Increase Dexterity"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.dex, "DEX", 50)}, "Buy"), 
+					React.createElement("li", null, "Increase Will"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.will, "WILL", 50)}, "Buy"), 
+					React.createElement("li", null, "Increase Intelligence"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.intl, "INTL", 50)}, "Buy"), 
+					React.createElement("li", null, "Increase Luck"), React.createElement("button", {onClick: this.handlePurchase.bind(null, RPG.currPlayer.stats.luck, "LUCK", 25)}, "Buy")
 				), 
 
-				skillOpt
+				skillOpt, 
+
+				React.createElement("button", {onClick: this.handleAdvance}, "FIGHT")
 
 			)
 		)
@@ -125,7 +155,34 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 				RPG.Item.setArmor(RPG.currPlayer, armor)
 			}
 		} else {
-			// do the same for stats
+			switch(purchaseType) {
+				case "HP":
+					RPG.currPlayer.stats.hp += 5
+					break
+				case "MP":
+					RPG.currPlayer.stats.mp += 5
+					break
+				case "SP":
+					RPG.currPlayer.stats.sp += 5
+					break
+				case "STR":
+					RPG.currPlayer.stats.str += 5
+					break
+				case "DEX":
+					RPG.currPlayer.stats.dex += 5
+					break
+				case "WILL":
+					RPG.currPlayer.stats.will += 5
+					break
+				case "INTL":
+					RPG.currPlayer.stats.intl += 5
+					break
+				case "LUCK":
+					RPG.currPlayer.stats.luck += 5
+					break
+				default:
+					break
+			}
 		}
 
 		this.setState({points: this.state.points - cost})
@@ -133,10 +190,8 @@ var Dashboard = React.createClass({displayName: "Dashboard",
 		return false
 	},
 
-	handlePointsChange: function(event) {
-		// checks if enough points
-		// calls corresponding handler
-		// skills, stats, upgrades
+	handleAdvance: function(event) {
+		confirm("Do you want to proceed?")
 	}
 })
 

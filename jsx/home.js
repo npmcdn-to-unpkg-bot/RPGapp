@@ -4,11 +4,18 @@ var WarSkill = React.createClass({
 	render: function() {
 		return (
 			<ol>
-				<li>Buy Skill: Smash</li>
-				<li>Buy Skill: Defense</li>
-				<li>Buy Skill: Bash</li>
+				<li>Buy Skill: Bash</li><button onClick={this.handlePurchase.bind(null, 'bash', 105)}>Buy</button>
+				<li>Buy Skill: Smash</li><button onClick={this.handlePurchase.bind(null, 'smash', 155)}>Buy</button>
 			</ol>
 		)
+	},
+
+	handlePurchase: function(_name, _cost) {
+		if(_cost > this.props.points) return false
+
+		RPG.currPlayer.skills.push(RPG.Skills.getSkill(_name))
+
+		return false
 	}
 })
 
@@ -16,11 +23,18 @@ var MageSkill = React.createClass({
 	render: function() {
 		return (
 			<ol>
-				<li>Buy Skill: Firebolt</li>
-				<li>Buy Skill: Mana Shield</li>
-				<li>Buy Skill: Hailstorm</li>
+				<li>Buy Skill: Firebolt</li><button onClick={this.handlePurchase.bind(null, 'firebolt', 105)}>Buy</button>
+				<li>Buy Skill: Hailstorm</li><button onClick={this.handlePurchase.bind(null, 'hailstorm', 155)}>Buy</button>
 			</ol>
 		)
+	},
+
+	handlePurchase: function(_name, _cost) {
+		if(_cost > this.props.points) return false
+
+		RPG.currPlayer.skills.push(RPG.Skills.getSkill(_name))
+
+		return false
 	}
 })
 
@@ -28,11 +42,18 @@ var BowSkill = React.createClass({
 	render: function() {
 		return (
 			<ol>
-				<li>Buy Skill: Magnum</li>
-				<li>Buy Skill: Arrow Revolver</li>
-				<li>Buy Skill: Counter</li>
+				<li>Buy Skill: Arrow Revolver</li><button onClick={this.handlePurchase.bind(null, 'revolver', 105)}>Buy</button>
+				<li>Buy Skill: Magnum</li><button onClick={this.handlePurchase.bind(null, 'magnum', 155)}>Buy</button>
 			</ol>
 		)
+	},
+
+	handlePurchase: function(_name, _cost) {
+		if(_cost > this.props.points) return false
+
+		RPG.currPlayer.skills.push(RPG.Skills.getSkill(_name))
+
+		return false
 	}
 })
 
@@ -40,11 +61,18 @@ var FtrSkill = React.createClass({
 	render: function() {
 		return (
 			<ol>
-				<li>Buy Skill: Dropkick</li>
-				<li>Buy Skill: Tumble</li>
-				<li>Buy Skill: Punch</li>
+				<li>Buy Skill: Punch</li><button onClick={this.handlePurchase.bind(null, 'punch', 105)}>Buy</button>
+				<li>Buy Skill: Dropkick</li><button onClick={this.handlePurchase.bind(null, 'dropkick', 155)}>Buy</button>
 			</ol>
 		)
+	},
+
+	handlePurchase: function(_name, _cost) {
+		if(_cost > this.props.points) return false
+
+		RPG.currPlayer.skills.push(RPG.Skills.getSkill(_name))
+
+		return false
 	}
 })
 
@@ -59,7 +87,7 @@ var Dashboard = React.createClass({
 		var skillOpt
 		switch(RPG.currTalent) {
 			case RPG.Talent.WARRIOR:
-				skillOpt = <WarSkill />
+				skillOpt = <WarSkill points={this.state.points}/>
 				break;
 			case RPG.Talent.MAGE:
 				skillOpt = <MageSkill />
@@ -80,17 +108,19 @@ var Dashboard = React.createClass({
 				<ol>
 					<li>Upgrade Armor</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.equipment.armor, "Armor", 75)}>Buy</button>
 					<li>Upgrade Weapon</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.equipment.weapon, "Weapon", 75)}>Buy</button>
-					<li>Increase HP</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.hp, 50)}>Buy</button>
-					<li>Increase MP</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.mp, 50)}>Buy</button>
-					<li>Increase SP</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.sp, 25)}>Buy</button>
-					<li>Increase Strength</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.str, 50)}>Buy</button>
-					<li>Increase Dexterity</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.dex, 50)}>Buy</button>
-					<li>Increase Will</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.will, 50)}>Buy</button>
-					<li>Increase Intelligence</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.intl, 50)}>Buy</button>
-					<li>Increase Luck</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.luck, 25)}>Buy</button>
+					<li>Increase HP</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.hp, "HP", 50)}>Buy</button>
+					<li>Increase MP</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.mp, "MP", 50)}>Buy</button>
+					<li>Increase SP</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.sp, "SP", 25)}>Buy</button>
+					<li>Increase Strength</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.str, "STR", 50)}>Buy</button>
+					<li>Increase Dexterity</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.dex, "DEX", 50)}>Buy</button>
+					<li>Increase Will</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.will, "WILL", 50)}>Buy</button>
+					<li>Increase Intelligence</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.intl, "INTL", 50)}>Buy</button>
+					<li>Increase Luck</li><button onClick={this.handlePurchase.bind(null, RPG.currPlayer.stats.luck, "LUCK", 25)}>Buy</button>
 				</ol>
 
 				{skillOpt}
+
+				<button onClick={this.handleAdvance}>FIGHT</button>
 
 			</div>
 		)
@@ -125,7 +155,34 @@ var Dashboard = React.createClass({
 				RPG.Item.setArmor(RPG.currPlayer, armor)
 			}
 		} else {
-			// do the same for stats
+			switch(purchaseType) {
+				case "HP":
+					RPG.currPlayer.stats.hp += 5
+					break
+				case "MP":
+					RPG.currPlayer.stats.mp += 5
+					break
+				case "SP":
+					RPG.currPlayer.stats.sp += 5
+					break
+				case "STR":
+					RPG.currPlayer.stats.str += 5
+					break
+				case "DEX":
+					RPG.currPlayer.stats.dex += 5
+					break
+				case "WILL":
+					RPG.currPlayer.stats.will += 5
+					break
+				case "INTL":
+					RPG.currPlayer.stats.intl += 5
+					break
+				case "LUCK":
+					RPG.currPlayer.stats.luck += 5
+					break
+				default:
+					break
+			}
 		}
 
 		this.setState({points: this.state.points - cost})
@@ -133,10 +190,8 @@ var Dashboard = React.createClass({
 		return false
 	},
 
-	handlePointsChange: function(event) {
-		// checks if enough points
-		// calls corresponding handler
-		// skills, stats, upgrades
+	handleAdvance: function(event) {
+		confirm("Do you want to proceed?")
 	}
 })
 

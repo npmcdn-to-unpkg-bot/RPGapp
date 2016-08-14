@@ -45,6 +45,15 @@ RPG.Player.initStats = function() {
 	return stats
 }
 
+RPG.Player.initSkills = function(_talent) {
+
+	var skills = []
+
+	skills.push(RPG.Skills.normalAttack(_talent))
+
+	return skills
+}
+
 RPG.Player.applyTalentBonus = function(_talent) {
 	var stats = RPG.Player.initStats();
 
@@ -76,11 +85,13 @@ RPG.Player.applyTalentBonus = function(_talent) {
 RPG.Player.createPlayer = function(_name, _talent) {
 	var _equipment = RPG.Player.initEquipment();
 	var _stats = RPG.Player.applyTalentBonus(_talent);
+	var _skills = RPG.Player.initSkills(_talent);
 	var player = {
 		 name: _name
 		, talent: _talent
 		, equipment: _equipment
 		, stats: _stats
+		, skills: _skills
 	}
 
 	return player
